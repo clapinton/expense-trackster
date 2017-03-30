@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  owner_id: 1
+  datetime: 2017-03-30 13:42:30
+  amount: 1.5
+  description: MyString
+
+two:
+  owner_id: 1
+  datetime: 2017-03-30 13:42:30
+  amount: 1.5
+  description: MyString
