@@ -1,0 +1,12 @@
+<script type="text/javascript">
+//Bootstraping current user to the window so it maintains logged status
+<% if current_user %>
+//We need html_safe here to escape special chars/script that the user might have used as username
+  window.currentUser = <%= render("api/users/user.json.jbuilder",
+    user: current_user).html_safe %>
+<% end %>
+</script>
+
+<main id="root">
+  Hello, World!
+</main>
