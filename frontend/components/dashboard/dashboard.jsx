@@ -1,5 +1,6 @@
 import React from 'react';
 import { logout } from '../../api/session_api';
+import { getAllExpenses } from '../../api/expenses_api';
 import ExpenseForm from '../expenses/expense_form';
 import ExpenseList from '../expenses/expense_list';
 
@@ -17,6 +18,12 @@ class Dashboard extends React.Component {
 
     this.saveSuccess = this.saveSuccess.bind(this);
   }
+
+  componentWillMount() {
+    getAllExpenses( response => {
+      this.setState({expenseList: response})
+    });
+  }  
 
   logoutSuccess(response) {
     window.currentUser = null;
