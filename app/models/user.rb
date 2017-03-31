@@ -22,6 +22,11 @@ class User < ActiveRecord::Base
 
   attr_reader :password
 
+  has_many :expenses, dependent: :destroy,
+    primary_key: :id,
+    foreign_key: :owner_id,
+    class_name: :Expense
+
   def generate_session_token
     SecureRandom.urlsafe_base64(16)
   end
