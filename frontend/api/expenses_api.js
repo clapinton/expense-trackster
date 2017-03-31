@@ -21,11 +21,22 @@ export const createExpense = (expense, success, error) => {
   $.ajax({
     method: "POST",
     url: "api/expenses",
-    data: expense,
+    data: {expense},
     success,
     error
   })
 }
+
+export const editExpense = (expense, success, error) => {
+  $.ajax({
+    method: "PATCH",
+    url: `api/expenses/${expense.id}`,
+    data: {expense},
+    success,
+    error
+  })
+}
+
 
 export const deleteExpense = (expense, success, error) => {
   $.ajax({

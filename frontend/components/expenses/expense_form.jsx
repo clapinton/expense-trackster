@@ -1,14 +1,17 @@
 import React from 'react';
-import { getExpense, createExpense } from '../../api/expenses_api';
+import { getExpense, createExpense, editExpense } from '../../api/expenses_api';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: "",
       datetime: "",
       amount: "",
-      description: ""
+      description: "",
+      owner_id: "",
+      isEdit: false
     }
 
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -18,15 +21,14 @@ class ExpenseForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (Object.keys(nextProps.expense).length === 0) {
-      this.setState({amount: "", datetime: "", description: ""});
+      this.setState({id: "", amount: "", datetime: "", description: "", owner_id: "", isEdit: false});
     } else {
       getExpense(nextProps.expense, this.getSuccess, this.getError);
     }
   }
 
-  getSuccess({datetime, amount, description}) {
-    console.log(description);
-    this.setState({datetime, amount, description});
+  getSuccess({id, datetime, amount, description, owner_id}) {
+    this.setState({id, datetime, amount, description, owner_id, isEdit: true});
   }
 
   getError(error) {
@@ -46,7 +48,11 @@ class ExpenseForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const expense = this.state;
-    createExpense({expense}, this.props.saveSuccess, this.saveError);
+    if (this.state.isEdit) {
+      editExpense(expense, this.props.saveSuccess, this.saveError);
+    } else {
+      createExpense(expense, this.props.saveSuccess, this.saveError);
+    }
   }
 
 
