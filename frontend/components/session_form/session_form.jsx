@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { hashHistory, withRouter } from 'react-router';
 import { Link } from 'react-router';
 import { signup, login } from '../../api/session_api';
 
@@ -13,6 +13,7 @@ class SessionForm extends React.Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.loginSuccess = this.loginSuccess.bind(this);
   }
 
   handleUpdate(property) {
@@ -21,6 +22,7 @@ class SessionForm extends React.Component {
 
   loginSuccess(response) {
     window.currentUser = response;
+    this.props.router.push("/dashboard");
     console.log("Login successful");
   }
 
