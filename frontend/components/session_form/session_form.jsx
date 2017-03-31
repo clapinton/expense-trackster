@@ -14,10 +14,15 @@ class SessionForm extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loginSuccess = this.loginSuccess.bind(this);
+    this.toggleCheckbox = this.toggleCheckbox.bind(this);
   }
 
   handleUpdate(property) {
     return e => this.setState({[property]: e.target.value})
+  }
+
+  toggleCheckbox(el) {
+    this.setState({is_admin: el.target.checked});
   }
 
   loginSuccess(response) {
