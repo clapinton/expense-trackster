@@ -7,12 +7,18 @@ class ExpenseForm extends React.Component {
 
     this.state = {
       datetime: "",
-      amount: 0.0,
+      amount: "",
       description: ""
     }
 
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.expenseId === "") {
+      this.setState({amount: "", datetime: "", description: ""});
+    }
   }
 
   handleUpdate(target) {
@@ -38,19 +44,22 @@ class ExpenseForm extends React.Component {
         <form>
           <label htmlFor="expenseAmount">Amount</label>
           <br/>
-          <input type="number" name="expense[amount]" id="expenseAmount" onChange={this.handleUpdate("amount")}/>
+          <input type="text" name="expense[amount]" id="expenseAmount" 
+            onChange={this.handleUpdate("amount")} value={this.state.amount}/>
           <br/>
           <br/>
 
           <label htmlFor="expenseDatetime">Date and Time</label>
           <br/>
-          <input type="datetime-local" name="expense[datetime]" id="expenseDatetime" onChange={this.handleUpdate("datetime")}/>
+          <input type="datetime-local" name="expense[datetime]" id="expenseDatetime"
+            onChange={this.handleUpdate("datetime")} value={this.state.datetime}/>
           <br/>
           <br/>
 
           <label htmlFor="expenseDescription">Description</label>
           <br/>
-          <input type="text" name="expense[description]" id="expenseDescription" onChange={this.handleUpdate("description")}/>
+          <input type="text" name="expense[description]" id="expenseDescription"
+            onChange={this.handleUpdate("description")} value={this.state.description}/>
           <br/>
           <br/>
 
