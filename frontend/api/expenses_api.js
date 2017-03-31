@@ -7,6 +7,16 @@ export const getAllExpenses = (success, error) => {
   })
 }
 
+export const getExpense = (expense, success, error) => {
+  $.ajax({
+    method: "GET",
+    url: `api/expenses/${expense.id}`,
+    data: {expense},
+    success,
+    error
+  })
+}
+
 export const createExpense = (expense, success, error) => {
   $.ajax({
     method: "POST",

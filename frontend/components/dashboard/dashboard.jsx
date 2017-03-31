@@ -12,11 +12,12 @@ class Dashboard extends React.Component {
     this.logoutSuccess = this.logoutSuccess.bind(this);
 
     this.state = {
-      expenseId: "",
+      expense: {},
       expenseList: []
     }
 
     this.saveSuccess = this.saveSuccess.bind(this);
+    this.selectExpenseToEdit = this.selectExpenseToEdit.bind(this);
   }
 
   componentWillMount() {
@@ -40,8 +41,12 @@ class Dashboard extends React.Component {
     logout(this.logoutSuccess, this.logoutError);
   }
 
+  selectExpenseToEdit(expense) {
+    this.setState({expense});
+  }
+
   saveSuccess(response) {
-    this.setState({expenseList: response, expenseId: ""});
+    this.setState({expenseList: response, expense: {}});
     console.log("Expense save successful: ", this.state);
   }
 
@@ -49,8 +54,8 @@ class Dashboard extends React.Component {
     return (
       <div className="dashboard">
         <h1>Dashboard</h1>
-        <ExpenseForm expenseId={this.state.expenseId} saveSuccess={this.saveSuccess}/>
-        <ExpenseList expenseList={this.state.expenseList}/>
+        <ExpenseForm expense={this.state.expense} saveSuccess={this.saveSuccess}/>
+        <ExpenseList expenseList={this.state.expenseList} selectExpenseToEdit={this.selectExpenseToEdit}/>
       <button onClick={this.handleLogout}>Logout</button>
       </div>
     )

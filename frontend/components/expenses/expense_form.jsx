@@ -1,5 +1,5 @@
 import React from 'react';
-import { createExpense } from '../../api/expenses_api';
+import { getExpense, createExpense } from '../../api/expenses_api';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
@@ -13,12 +13,24 @@ class ExpenseForm extends React.Component {
 
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getSuccess = this.getSuccess.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.expenseId === "") {
+    if (Object.keys(nextProps.expense).length === 0) {
       this.setState({amount: "", datetime: "", description: ""});
+    } else {
+      getExpense(nextProps.expense, this.getSuccess, this.getError);
     }
+  }
+
+  getSuccess({datetime, amount, description}) {
+    console.log(description);
+    this.setState({datetime, amount, description});
+  }
+
+  getError(error) {
+    console.log("There was an error when fetching the expense: ", error);
   }
 
   handleUpdate(target) {

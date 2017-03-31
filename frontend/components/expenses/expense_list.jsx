@@ -38,6 +38,7 @@ class ExpenseList extends React.Component {
       e.preventDefault();
       switch (action) {
         case "edit":
+          this.props.selectExpenseToEdit(expense);
           break;
         case "delete":
           deleteExpense(expense, this.operationSuccess, this.operationError);
