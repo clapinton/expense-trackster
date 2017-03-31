@@ -41,7 +41,7 @@ class Dashboard extends React.Component {
   }
 
   saveSuccess(response) {
-    this.setState({expenseList: response});
+    this.setState({expenseList: response, expenseId: ""});
     console.log("Expense save successful: ", this.state);
   }
 

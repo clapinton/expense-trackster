@@ -16,3 +16,13 @@ export const createExpense = (expense, success, error) => {
     error
   })
 }
+
+export const deleteExpense = (expense, success, error) => {
+  $.ajax({
+    method: "DELETE",
+    url: `api/expenses/${expense.id}`,
+    data: {expense},
+    success,
+    error
+  })
+}
