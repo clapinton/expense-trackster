@@ -1,5 +1,6 @@
 import React from 'react';
 import { logout } from '../../api/session_api';
+import ExpenseForm from '../expenses/expense_form';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className="dashboard">
-        Dashboard
+        <h1>Dashboard</h1>
+        <ExpenseForm />
       <button onClick={this.handleLogout}>Logout</button>
       </div>
     )
