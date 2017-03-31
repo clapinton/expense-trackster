@@ -19,10 +19,16 @@ class ApplicationController < ActionController::Base
     session[:session_token] = nil
   end
 
-  def require_signed_in!
+  def require_signed_in
     unless current_user
       render json: ["You need to log in first"], status: 403
     end
+  end
+
+  def require_correct_owner
+    if current_user.id.to_s != expense_params[:owner_id]
+      render json: ["You do not have permission to execute this action."], status: 403
+    end    
   end
 
 end
