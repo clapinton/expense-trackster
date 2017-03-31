@@ -13,7 +13,7 @@
 
 class Expense < ActiveRecord::Base
 
-  validates :amount, :datetime, :description, presence: true
+  validates :amount, :datetime, :description, :owner_id, presence: true
   validate :amount_digits
 
   belongs_to :owner,
