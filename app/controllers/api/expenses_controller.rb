@@ -5,7 +5,11 @@ class Api::ExpensesController < ApplicationController
   before_action :require_correct_owner, only: [:update, :destroy]
 
   def index
-    @expenses = current_user.expenses
+    if current_user.is_admin
+      @expenses = Expense.all
+    else
+      @expenses = current_user.expenses
+    end
     render 'api/expenses/index'
   end
 
