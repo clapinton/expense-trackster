@@ -3,7 +3,7 @@
 # Table name: reports
 #
 #  id         :integer          not null, primary key
-#  created_by :integer
+#  created_by :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
