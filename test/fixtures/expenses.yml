@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: expenses
+#
+#  id          :integer          not null, primary key
+#  owner_id    :integer          not null
+#  datetime    :datetime         not null
+#  amount      :float            not null
+#  description :string           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
