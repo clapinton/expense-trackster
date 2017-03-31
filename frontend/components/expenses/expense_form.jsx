@@ -1,11 +1,11 @@
 import React from 'react';
+import { createExpense } from '../../api/expenses_api';
 
 class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      owner_id: window.currentUser.id,
       datetime: "",
       amount: 0.0,
       description: ""
@@ -21,9 +21,18 @@ class ExpenseForm extends React.Component {
     }
   }
 
+  saveSuccess(response) {
+    console.log("Expense save successful: ", response);
+  }
+
+  saveError(error) {
+    console.log("Error while saving expense: ", error);
+  }
+
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
+    const expense = this.state;
+    createExpense({expense}, this.saveSuccess, this.saveError);
   }
 
 
