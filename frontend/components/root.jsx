@@ -13,6 +13,7 @@ class Root extends React.Component {
     return (
       <Router history={hashHistory}>
         <Route path="/login" component={SessionForm}/>
+        <Route path="/signup" component={SessionForm}/>
       </Router>
     )
   }

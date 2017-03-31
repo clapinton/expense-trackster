@@ -20,11 +20,12 @@ class SessionForm extends React.Component {
   }
 
   loginSuccess(response) {
-    console.log(response);
+    window.currentUser = response;
+    console.log("Login successful");
   }
 
   loginError(response) {
-    console.log(response);
+    console.log("Login error: ", response);
   }
 
   handleSubmit(e) {
@@ -49,6 +50,17 @@ class SessionForm extends React.Component {
     } else {
       return (<button className="user-login-btn"
         onClick={this.handleSubmit}>Signup</button>);
+    }
+  }
+
+  renderIsAdminCheckbox() {
+    if (!this.isLoginForm()) {
+      return (
+        <div>
+          <label htmlFor="is-admin">Admin?</label>
+          <input type='checkbox' id="is-admin" name='user[is_admin]' onChange={this.toggleCheckbox}/>
+        </div>
+      )
     }
   }
 
@@ -84,6 +96,8 @@ class SessionForm extends React.Component {
             <input type="password" name="user[password]" id="password" onChange={this.handleUpdate("password")}/>
             <br/>
             <br/>
+
+            {this.renderIsAdminCheckbox()}
 
             {this.renderButtons()}
             <br/>
