@@ -1,2 +1,1 @@
-json.id @user.id
-json.email @user.email
+json.partial! @user, partial: 'api/users/user', as: :user
