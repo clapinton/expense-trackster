@@ -21,10 +21,6 @@ class ExpenseForm extends React.Component {
     }
   }
 
-  saveSuccess(response) {
-    console.log("Expense save successful: ", response);
-  }
-
   saveError(error) {
     console.log("Error while saving expense: ", error);
   }
@@ -32,7 +28,7 @@ class ExpenseForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const expense = this.state;
-    createExpense({expense}, this.saveSuccess, this.saveError);
+    createExpense({expense}, this.props.saveSuccess, this.saveError);
   }
 
 

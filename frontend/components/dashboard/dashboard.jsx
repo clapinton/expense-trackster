@@ -1,6 +1,7 @@
 import React from 'react';
 import { logout } from '../../api/session_api';
 import ExpenseForm from '../expenses/expense_form';
+import ExpenseList from '../expenses/expense_list';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -8,6 +9,13 @@ class Dashboard extends React.Component {
 
     this.handleLogout = this.handleLogout.bind(this);
     this.logoutSuccess = this.logoutSuccess.bind(this);
+
+    this.state = {
+      expenseId: "",
+      expenseList: []
+    }
+
+    this.saveSuccess = this.saveSuccess.bind(this);
   }
 
   logoutSuccess(response) {
@@ -25,11 +33,17 @@ class Dashboard extends React.Component {
     logout(this.logoutSuccess, this.logoutError);
   }
 
+  saveSuccess(response) {
+    this.setState({expenseList: response});
+    console.log("Expense save successful: ", this.state);
+  }
+
   render() {
     return (
       <div className="dashboard">
         <h1>Dashboard</h1>
-        <ExpenseForm />
+        <ExpenseForm expenseId={this.state.expenseId} saveSuccess={this.saveSuccess}/>
+        <ExpenseList expenseList={this.state.expenseList}/>
       <button onClick={this.handleLogout}>Logout</button>
       </div>
     )
