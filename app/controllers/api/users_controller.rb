@@ -1,6 +1,6 @@
 class Api::UsersController < ApplicationController
 
-  before_action :require_signed_in!, only: [:show]
+  before_action :require_signed_in, only: [:show]
 
   def create
 
