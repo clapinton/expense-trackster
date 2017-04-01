@@ -78,5 +78,6 @@ RSpec.describe User, :type => :model do
     end
   end
 
-  
+  it { should have_many(:expenses) }
+
 end
