@@ -62,56 +62,50 @@ RSpec.describe Api::UsersController, type: :controller do
 
   describe "POST" do
 
-    it "returns 403" do
-      new_expense = {amount: "543.21", owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'POSTed by an admin'}
-      post :create, {expense: new_expense, format: :json}
-      expect(response).to have_http_status(403)
+    context "with correct parameters" do
+
+      it "allows user to be created with valid parameters and render show" do
+        new_user = {email: "user2@domain.com",  password: "abcdef", is_admin: false}
+        post :create, {user: new_user, format: :json}
+        expect(response).to have_http_status(200)
+        expect(response).to render_template("show")
+        new_created_user = User.find_by_email("user2@domain.com")
+        expect(new_created_user).to_not be_nil
+        expect(new_created_user.is_admin).to be(false)
+      end
+
+      it "allows admin to be created with valid parameters and render show" do
+        new_admin = {email: "admin2@domain.com",  password: "abcdef", is_admin: true}
+        post :create, {user: new_admin, format: :json}
+        expect(response).to have_http_status(200)
+        expect(response).to render_template("show")
+        new_created_user = User.find_by_email("admin2@domain.com")
+        expect(new_created_user).to_not be_nil
+        expect(new_created_user.is_admin).to be(true)
+      end
+
+      it "logs in the newly created user" do
+        new_user = {email: "user2@domain.com",  password: "abcdef", is_admin: false}
+        post :create, {user: new_user, format: :json}
+        expect(response).to have_http_status(200)
+        new_created_user = User.find_by_email("user2@domain.com")
+        expect(session[:session_token]).to eq(new_created_user.session_token)
+      end
+
     end
+
+    it "does not allow duplicate users" do
+      new_user = {email: "user2@domain.com",  password: "abcdef", is_admin: false}
+      post :create, {user: new_user, format: :json}
+      post :create, {user: new_user, format: :json}
+      expect(response).to have_http_status(401)      
     end
 
-
-  #   let(:user) { User.create!(email: "admin@domain.com",  password: "abcdef", is_admin: false) }
-
-  #   before do
-  #     get :show, {:format => :json, :id => user.id}
-  #   end
-
-    
-  #   context "with invalid params" do
-      
-  #     it "validates the presence of the user's email and password" do
-  #       post :create, user: {email: "admin@bla.com", password: "", is_admin: false}
-  #       expect(response).to have_http_status(422)
-  #     end    
-  #     it "validates the user uniqueness" do
-  #       post :create, user: {email: "admin@bla.com", password: "abcdef", is_admin: false}
-  #       # post :create, user: {email: "admin@bla.com", password: "abcdef", is_admin: false}
-  #       expect(response).to have_http_status(401)
-  #     end    
-  #   end
-    
-
-    # it "logs in the user" do
-    #   post :create, user: {email: "admin@bla.com", password: "password", is_admin: false}
-    #   user = User.find_by_email("admin@bla.com")
-
-    #   expect(session[:session_token]).to eq(user.session_token)
-    # end
-
-
-    # it "returns http success" do
-    #   expect(response).to have_http_status(200)
-    # end
-
-    # it "response with JSON body containing expected User attributes" do
-    #   hash_body = nil
-    #   expect { hash_body = JSON.parse(response.body).with_indifferent_access }.not_to raise_exception
-      # expect(hash_body).to match({
-      #   id: article.id,
-      #   title: 'Hello World'
-      # })
-    # end
-
-  # end  
+    it "does not create user with invalid parameters" do
+      new_user = {password: "abcdef", is_admin: false}
+      post :create, {user: new_user, format: :json}
+      expect(response).to have_http_status(422)
+    end
+  end
 
 end
