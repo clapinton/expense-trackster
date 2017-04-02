@@ -1,7 +1,6 @@
 class Api::ExpensesController < ApplicationController
 
   before_action :require_signed_in
-  before_action :require_correct_owner, only: [:update, :destroy]
 
   def index
     @expenses = Expense.get_all_expenses(current_user)
@@ -37,23 +36,39 @@ class Api::ExpensesController < ApplicationController
 
   def update
     @expense = Expense.find(params[:id])
-    if @expense.update(expense_params)
-      @expenses = Expense.get_all_expenses(current_user)
-      render "api/expenses/index"
+
+    if is_correct_owner(@expense)
+
+      if @expense.update(expense_params)
+        @expenses = Expense.get_all_expenses(current_user)
+        render "api/expenses/index"
+      else
+        render json: @expense.errors.full_messages, status: 422
+      end
+
     else
-      render json: @expense.errors.full_messages, status: 422
+      render json: ["You do not have permission to view this expense."], status: 403      
     end
+
   end
 
   def destroy
     @expense = Expense.find(params[:id])
-    if @expense
-      @expense.delete
-      @expenses = Expense.get_all_expenses(current_user)
-      render "api/expenses/index"
+
+    if is_correct_owner(@expense)
+
+      if @expense
+        @expense.delete
+        @expenses = Expense.get_all_expenses(current_user)
+        render "api/expenses/index"
+      else
+        render json: ["Expense not found"], status: 404
+      end
+
     else
-      render json: ["Expense not found"], status: 422
+      render json: ["You do not have permission to view this expense."], status: 403
     end
+
   end
 
 private
