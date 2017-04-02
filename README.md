@@ -23,3 +23,11 @@ Authentication was written using the following framework:
 * on login, the input password is compared against the password_digest using the `BCrypt#is_password?(password)` method;
 * if login is successful, a session_token is generated and saved to the respective User and stored in the client's cookie: `session[:session_token] = user.session_token`;
 * the pure text password is, therefore, never stored anywhere and is discarded as soon as the login process finalizes with either success or error.
+
+## Testing
+
+### Backend
+
+`bundle exec rspec` will run all specs.
+`bundle exec rspec specs/user_spec.rb` will run the User model spec.
+`bundle exec rspec specs/user_spec.rb:47` will only run the spec on line 47 of the User model.
