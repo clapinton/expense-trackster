@@ -1,7 +1,6 @@
 class Api::ExpensesController < ApplicationController
 
   before_action :require_signed_in
-  before_action :require_owner_or_admin, only: [:show]
   before_action :require_correct_owner, only: [:update, :destroy]
 
   def index
@@ -12,11 +11,15 @@ class Api::ExpensesController < ApplicationController
   def show
     puts("Hit #show for #{params[:id]}")
     @expense = Expense.find(params[:id])
-    if @expense
+    
+    if @expense && is_owner_or_admin(@expense)
       render "api/expenses/show"
+    elsif !is_owner_or_admin(@expense)
+      render json: ["You do not have permission to view this expense."], status: 403      
     else
       render json: ["Expense not found"], status: 404
     end
+
   end  
 
   def create
@@ -59,6 +62,12 @@ private
     params.require(:expense).permit(:amount, :datetime, :description, :owner_id)
   end
 
+  def is_owner_or_admin(expense)
+    current_user.id === expense.owner_id || current_user.is_admin
+  end
 
+  def is_correct_owner(expense)
+    current_user.id === expense.owner_id
+  end
 
 end

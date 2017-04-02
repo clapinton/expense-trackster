@@ -25,16 +25,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def require_correct_owner
-    if current_user.id.to_s != expense_params[:owner_id]
-      render json: ["You do not have permission to execute this action."], status: 403
-    end    
-  end
-
-  def require_owner_or_admin
-    if current_user.id.to_s != expense_params[:owner_id] || !current_user.is_admin
-      render json: ["You do not have permission to execute this action."], status: 403
-    end
-  end
-
 end
