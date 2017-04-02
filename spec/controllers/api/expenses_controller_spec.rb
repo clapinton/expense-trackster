@@ -266,4 +266,61 @@ RSpec.describe Api::ExpensesController, type: :controller do
 
   end
 
+  describe "DETROY" do
+
+    context "when not logged in" do
+
+      it "returns 403" do
+        delete :destroy, {id: expense_admin.id, format: :json}
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context "when logged in as an admin" do
+
+      before do
+        allow(controller).to receive(:current_user) { admin }
+      end
+
+      it "should allow destroy of own expense" do
+        delete :destroy, {id: expense_admin.id, format: :json}
+        expect(response).to have_http_status(200)
+        begin
+          get :show, id: expense_admin.id, format: :json
+        rescue ActiveRecord::RecordNotFound
+          expect(response.body).to be_empty
+        end
+      end
+
+      it "should not allow destroy of another user's expense" do
+        delete :destroy, {id: expense_user.id, format: :json}
+        expect(response).to have_http_status(403)
+      end
+
+    end
+    
+    context "when logged in as a user" do
+
+      before do
+        allow(controller).to receive(:current_user) { user }
+      end
+
+      it "should allow destroy of own expense" do
+        delete :destroy, {id: expense_user.id, format: :json}
+        expect(response).to have_http_status(200)
+        begin
+          get :show, id: expense_user.id, format: :json
+        rescue ActiveRecord::RecordNotFound
+          expect(response.body).to be_empty
+        end
+      end
+
+      it "should not allow destroy of another user's expense" do
+        delete :destroy, {id: expense_admin.id, format: :json}
+        expect(response).to have_http_status(403)
+      end
+
+    end
+  end
+  
 end
