@@ -9,8 +9,6 @@ end
 
 RSpec.describe Api::ExpensesController, type: :controller do
 
-  render_views
-
   set_up_users_and_expenses
 
   describe "GET index" do
