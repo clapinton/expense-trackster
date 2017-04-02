@@ -18,6 +18,15 @@ RSpec.describe Api::ExpensesController, type: :controller do
 
   describe "GET index" do
 
+    context "when not logged in" do
+
+      it "returns 403" do
+        all_expenses = [expense_admin, expense_user]
+        get :index, {:format => :json, expenses: all_expenses}
+        expect(response).to have_http_status(403)
+      end
+    end
+
     context "when logged in as an admin" do
       
       before do
@@ -66,6 +75,14 @@ RSpec.describe Api::ExpensesController, type: :controller do
   end
 
   describe "GET show" do
+
+    context "when not logged in" do
+
+      it "returns 403" do
+        get :show, {:format => :json, :id => expense_admin.id}
+        expect(response).to have_http_status(403)
+      end
+    end
 
     context "when logged in as an admin" do
       
