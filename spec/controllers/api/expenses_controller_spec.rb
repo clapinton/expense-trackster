@@ -11,10 +11,7 @@ RSpec.describe Api::ExpensesController, type: :controller do
 
   render_views
 
-  let(:admin) { User.create!(email: "admin@domain.com",  password: "abcdef", is_admin: true) }
-  let(:user) { User.create!(email: "user@domain.com",  password: "abcdef", is_admin: false) }
-  let(:expense_admin) { Expense.create!(amount: "123.45", owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'Created by an admin') }
-  let(:expense_user) { Expense.create!(amount: "678.90", owner_id: user.id, datetime: '1414-12-14T14:12:00.000Z', description: 'Created by a user') }
+  set_up_users_and_expenses
 
   describe "GET index" do
 
@@ -144,4 +141,80 @@ RSpec.describe Api::ExpensesController, type: :controller do
     end
     
   end
+
+  describe "POST" do
+
+    context "when not logged in" do
+
+      it "returns 403" do
+        new_expense = {amount: "543.21", owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'POSTed by an admin'}
+        post :create, {expense: new_expense, format: :json}
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context "when logged in as an admin" do
+
+      before do
+        allow(controller).to receive(:current_user) { admin }
+      end
+
+      it "creates a valid expense and renders #index" do
+        new_expense = {amount: "543.21", owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'POSTed by an admin'}
+        post :create, {expense: new_expense, format: :json}
+        expect(response).to have_http_status(200)
+        expect(response).to render_template("index")
+      end
+
+      it "fails to create an invalid expense, returning 422" do
+        new_expense = {owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'POSTed by an admin'}
+        post :create, {expense: new_expense, format: :json}
+        expect(response).to have_http_status(422)
+      end
+
+    end
+
+    context "when logged in as a user" do
+
+      before do
+        allow(controller).to receive(:current_user) { user }
+      end
+
+      it "creates a valid expense and renders #index" do
+        new_expense = {amount: "98.76", owner_id: user.id, datetime: '1414-12-14T14:12:00.000Z', description: 'POSTed by a user'}
+        post :create, {expense: new_expense, format: :json}
+        expect(response).to have_http_status(200)
+        expect(response).to render_template("index")
+      end
+
+      it "fails to create an invalid expense, returning 422" do
+        new_expense = {owner_id: user.id, datetime: '1414-12-14T14:12:00.000Z', description: 'POSTed by a user'}
+        post :create, {expense: new_expense, format: :json}
+        expect(response).to have_http_status(422)
+      end
+
+    end
+
+  end
+
+  describe "PATCH" do
+
+    context "when not logged in" do
+
+      it "returns 403" do
+        new_expense = {amount: "543.21", owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'POSTed by an admin'}
+        post :create, {expense: new_expense, format: :json}
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context "when logged in as an admin" do
+
+      before do
+        allow(controller).to receive(:current_user) { admin }
+      end
+    end
+
+  end
+
 end

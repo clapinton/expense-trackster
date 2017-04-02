@@ -23,12 +23,17 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   config.backtrace_exclusion_patterns = [/\.rvm/, /\.rbenv/]
+
+  # So Rspec renders the view on the controller specs
+  config.render_views
 end
 
-# def create_jill_with_link
-#   let(:jill) { User.create!(username: 'jill_bruce', password: 'abcdef') }
-#   let(:jill_link) { jill.links.create!(title: 'Jill Link', url: 'cats.com') }
-# end
+def set_up_users_and_expenses
+  let(:admin) { User.create!(email: "admin@domain.com",  password: "abcdef", is_admin: true) }
+  let(:user) { User.create!(email: "user@domain.com",  password: "abcdef", is_admin: false) }
+  let(:expense_admin) { Expense.create!(amount: "123.45", owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'Created by an admin') }
+  let(:expense_user) { Expense.create!(amount: "678.90", owner_id: user.id, datetime: '1414-12-14T14:12:00.000Z', description: 'Created by a user') }
+end
 
 # def sign_up(username)
 #   visit new_user_path
