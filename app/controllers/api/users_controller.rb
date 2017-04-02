@@ -26,7 +26,7 @@ class Api::UsersController < ApplicationController
     if current_user.id === @user.id
       render "api/users/show"
     else
-      render json:"You do not have permission to view this user."
+      render json: ["You do not have permission to view this user."], status: 403
     end
   end
 
