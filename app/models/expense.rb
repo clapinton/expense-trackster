@@ -38,7 +38,7 @@ class Expense < ActiveRecord::Base
 
   private
   def amount_digits
-    unless /^[0-9]+(\.[0-9][0-9])?$/.match(amount.to_s)
+    unless /^[0-9]+\.?[0-9]?[0-9]?$/.match(amount.to_s)
       errors[:amount] << "has incorrect format. Please make it as xxx.xx"
     end
   end
