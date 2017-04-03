@@ -40,6 +40,7 @@ That option is not the best one since it's not scalable. If we want to expand th
 
 Having a Reports model also gives us the option of trackability (we can see who generated each report, when and what set of filters was used). This is more important for auditing purposes, which is a more advanced feature for project at this point.
 
+Date filters on the report are input as simple `YYYY-MM-DD`, while the Expense's `datetime` is `YYYY-MM-DD-T`, with time being in UTC. That means the filter's `to_date` will be non-inclusive, since `to_date` is seen as `00:00:00`. Therefore, we need to append `23:59:59` in order to make sure we include the `to_date` filter. That is done with the `#append_time_of_day` method inside the Report model. See below under **Improvements and Known bugs** for a different approach to this issue.
 
 ## Testing
 
@@ -109,3 +110,8 @@ Backend tests cover the following:
 |Expenses|destroy|Does not Delete another user's expense as admin|
 |Expenses|destroy|Deletes own expense as user|
 |Expenses|destroy|Does not Delete another user's expense as user|
+
+## Improvements and Known bugs
+
+* When an expense is input, the timezone is not specified, and is then default to UTC. When a report gets generated, the date filters are manually default to UTC as well. One option would be to grab the timezone automatically from the client when the expense is created, but if the user is creating an expanse which happened in a different time zone (e.g. when the user was on a trip), then the system shouldn't use the clients time zone.
+Another solution is giving the option to set the timezone whe creating the expense, but that will be an extra field which might not be necessary most of the time. Adding a `is_trip` flag that toggles the timezone selection is a possible solution.
