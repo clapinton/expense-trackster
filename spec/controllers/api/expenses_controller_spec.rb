@@ -264,7 +264,7 @@ RSpec.describe Api::ExpensesController, type: :controller do
 
   end
 
-  describe "DETROY" do
+  describe "DESTROY" do
 
     context "when not logged in" do
 
