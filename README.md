@@ -12,7 +12,16 @@ One static page is configured as html.erb, having the header and a single HTML e
 
 A React component called `Root` gets rendered on the target HTML element `<div id="root">`. That component then renders other components (login or dashboard) according to the URL route.
 
+## Running the app
+* Clone the repo;
+* run `bundle exec install` to install all ruby gems;
+* run `npm install` to install the required npm packages;
+* on one terminal tab, run `rails s` to start the rails server;
+* on another terminal tab, run `npm start` to start webpack;
+* the app should be available on localhost:3000
+
 ## Backend Structure
+All MVC-related files are inside the `/app` folder.
 
 ### Auth
 Authentication was written using the following framework:
@@ -41,6 +50,23 @@ That option is not the best one since it's not scalable. If we want to expand th
 Having a Reports model also gives us the option of trackability (we can see who generated each report, when and what set of filters was used). This is more important for auditing purposes, which is a more advanced feature for project at this point.
 
 Date filters on the report are input as simple `YYYY-MM-DD`, while the Expense's `datetime` is `YYYY-MM-DD-T`, with time being in UTC. That means the filter's `to_date` will be non-inclusive, since `to_date` is seen as `00:00:00`. Therefore, we need to append `23:59:59` in order to make sure we include the `to_date` filter. That is done with the `#append_time_of_day` method inside the Report model. See below under **Improvements and Known bugs** for a different approach to this issue.
+
+## Frontend Structure
+All frontend-related files are inside the `/frontend` folder. The entry file is `expense_trackster.jsx`.
+
+### Components
+As mentioned above, the `Root` components gets rendered on a targeted HTML element and then renders subcomponents depending on the URL path.
+
+Since we're not using Redux and no store was set up, the central state of the app belongs to the `dashboard` component. That means that it knows which expense is being edited, as well as which expenses are being displayed. It passes down these informations to the relevant component through their props.
+Both `expense_list` and `expense_form` work with AJAX requests to interface with the server. When the calls return with 200, the success callback happens on the `dashboard` level, setting the relevant slice of its central state to the response and passing that down to the relevant component. The component will update with the new passed in data (props).
+
+This structure allows for automatic updates of the `expense_list` component when a new expense is added or an existing one is edited through the `expense_form`.
+
+The `reports` component, on the other hand is a standalone component and does not receive anything from the `dashboard`. This means that the report is not automatically updated when changes happen to the expenses. It has to be regenerated/updated in order to see the changes. This can easily be changed by adapting the same approach as to the `expense_list` component.
+
+### API calls
+All calls are configured under the `/api` folder.
+
 
 ## Testing
 
