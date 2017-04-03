@@ -53,11 +53,9 @@ RSpec.describe Api::SessionsController, type: :controller do
       some_user = User.find_by_email("user@domain.com")
       @session_token = some_user.session_token
       puts("session token #{@session_token} belongs to user #{some_user.id}")
-      # debugger
     end
 
     it "logs out the current user" do
-      # debugger
       delete :destroy, format: :json
       expect(session[:session_token]).to be_nil
 
