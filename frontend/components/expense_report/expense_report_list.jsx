@@ -5,8 +5,7 @@ export default function ExpenseReportList({reportedExpenses}) {
     <table className="expense-report-list">
         <thead>
           <tr>
-            <td>Week Start</td>
-            <td>Week End</td>
+            <td>Week</td>
             <td>Expenses Total</td>
           </tr>
         </thead>
@@ -14,7 +13,6 @@ export default function ExpenseReportList({reportedExpenses}) {
       {reportedExpenses.map( expense => (
         <tr>
           <td>{expense.weeknum}</td>
-          <td>{expense.owner_id}</td>
           <td>{expense.sum_amount}</td>
         </tr>
       ))}

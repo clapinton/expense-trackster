@@ -1,0 +1,12 @@
+.dashboard-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.expenses-list {
+  text-align: center;
+  padding: 0 30px;
+  margin: 0 30px;
+  border-right: solid 2px #bdc3c7;
+  border-left: solid 2px #bdc3c7;
+}

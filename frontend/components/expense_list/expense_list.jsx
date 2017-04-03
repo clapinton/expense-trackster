@@ -1,5 +1,24 @@
 import React from 'react';
 import { deleteExpense } from '../../api/expenses_api';
+// Material UI
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
+import { lightBlue600 } from 'material-ui/styles/colors';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import FlatButton from 'material-ui/FlatButton'; 
+
+
+const muiTheme = getMuiTheme({
+    palette: {
+        primary1Color: lightBlue600,
+        primary2Color: lightBlue600,
+        accent1Color: lightBlue600,
+        accent2Color: lightBlue600,
+        accent3Color: lightBlue600,
+        alternateTextColor: lightBlue600
+    },
+});
 
 class ExpenseList extends React.Component {
   constructor(props) {
@@ -10,6 +29,7 @@ class ExpenseList extends React.Component {
     }
 
     this.operationSuccess = this.operationSuccess.bind(this);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -19,7 +39,8 @@ class ExpenseList extends React.Component {
   renderButton(ownerId, action, expense) {
     if (window.currentUser.id === ownerId) {
       return(
-        <button onClick={this.handleClick(action, expense)}>{action}</button>
+        <FlatButton label={action} primary={true}
+          onClick={this.handleClick(action, expense)}/>
       )
     }
   }
@@ -49,32 +70,34 @@ class ExpenseList extends React.Component {
 
   render() {
     return(
-      <div className="expense-list">
-        <table>
-        <thead>
-          <tr>
-            <td>Date</td>
-            <td>Amount</td>
-            <td>Description</td>
-            <td>Owner</td>
-            <td>Edit</td>
-            <td>Delete</td>
-          </tr>
-        </thead>
-        <tbody>
-        {this.state.expenseList.map( expense => (
-          <tr>
-            <td>{expense.datetime}</td>
-            <td>{expense.amount}</td>
-            <td>{expense.description}</td>
-            <td>{expense.owner_id}</td>
-            <td>{this.renderButton(expense.owner_id, "edit", expense)}</td>
-            <td>{this.renderButton(expense.owner_id, "delete", expense)}</td>
-          </tr>
-        ))}
-        </tbody>
-        </table>
-      </div>
+      <div className="expenses-list">
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <Table>
+            <TableHeader displaySelectAll={false}>
+              <TableRow>
+                <TableHeaderColumn>Date</TableHeaderColumn>
+                <TableHeaderColumn>Amount</TableHeaderColumn>
+                <TableHeaderColumn>Description</TableHeaderColumn>
+                <TableHeaderColumn>Owner</TableHeaderColumn>
+                <TableHeaderColumn>Edit</TableHeaderColumn>
+                <TableHeaderColumn>Delete</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody displayRowCheckbox={false} stripedRows={true}>
+            {this.state.expenseList.map( expense => (
+              <TableRow>
+                <TableRowColumn>{expense.datetime}</TableRowColumn>
+                <TableRowColumn>{expense.amount}</TableRowColumn>
+                <TableRowColumn>{expense.description}</TableRowColumn>
+                <TableRowColumn>{expense.owner_id}</TableRowColumn>
+                <TableRowColumn>{this.renderButton(expense.owner_id, "edit", expense)}</TableRowColumn>
+                <TableRowColumn>{this.renderButton(expense.owner_id, "delete", expense)}</TableRowColumn>
+              </TableRow>
+            ))}
+            </TableBody>
+          </Table>
+        </MuiThemeProvider>  
+      </div>      
     )
   }
 }

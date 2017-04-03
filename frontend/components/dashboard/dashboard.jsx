@@ -58,9 +58,11 @@ class Dashboard extends React.Component {
     return (
       <div className="dashboard">
         <h1>Dashboard</h1>
-        <ExpenseForm expense={this.state.expense} saveSuccess={this.saveSuccess}/>
-        <ExpenseList expenseList={this.state.expenseList} selectExpenseToEdit={this.selectExpenseToEdit}/>
-        <ExpenseReport/>
+        <div className="dashboard-wrapper">
+          <ExpenseForm expense={this.state.expense} saveSuccess={this.saveSuccess}/>
+          <ExpenseList expenseList={this.state.expenseList} selectExpenseToEdit={this.selectExpenseToEdit}/>
+          <ExpenseReport/>
+        </div>
       <button onClick={this.handleLogout}>Logout</button>
       </div>
     )
