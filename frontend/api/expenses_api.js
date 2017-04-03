@@ -47,3 +47,13 @@ export const deleteExpense = (expense, success, error) => {
     error
   })
 }
+
+export const createReport = (filters, success, error) => {
+  $.ajax({
+    method: "POST",
+    url: "api/reports",
+    data: {filters},
+    success,
+    error
+  })
+}
