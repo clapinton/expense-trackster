@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20170330213125) do
   create_table "expenses", force: :cascade do |t|
     t.integer  "owner_id",    null: false
     t.datetime "datetime",    null: false
+    t.integer  "weeknum",     null: false
     t.string   "amount",      null: false
     t.string   "description", null: false
     t.datetime "created_at",  null: false
@@ -26,6 +27,7 @@ ActiveRecord::Schema.define(version: 20170330213125) do
   end
 
   add_index "expenses", ["owner_id"], name: "index_expenses_on_owner_id", using: :btree
+  add_index "expenses", ["weeknum"], name: "index_expenses_on_weeknum", using: :btree
 
   create_table "reports", force: :cascade do |t|
     t.integer  "created_by", null: false

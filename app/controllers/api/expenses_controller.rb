@@ -23,6 +23,7 @@ class Api::ExpensesController < ApplicationController
   def create
     expense = Expense.new(expense_params)
     expense.owner_id = current_user.id
+    expense.weeknum = expense.get_weeknum
 
     if expense.save
       @expenses = Expense.get_all_expenses(current_user)

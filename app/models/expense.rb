@@ -5,6 +5,7 @@
 #  id          :integer          not null, primary key
 #  owner_id    :integer          not null
 #  datetime    :datetime         not null
+#  weeknum     :integer          not null
 #  amount      :string           not null
 #  description :string           not null
 #  created_at  :datetime         not null
@@ -27,6 +28,12 @@ class Expense < ActiveRecord::Base
       else
         return current_user.expenses
       end      
+    end
+
+    def get_weeknum
+      date_year = self.datetime.strftime("%Y")
+      week = self.datetime.strftime("%U")
+      (date_year+week).to_i
     end
 
   private
