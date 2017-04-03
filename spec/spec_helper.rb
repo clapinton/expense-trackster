@@ -28,6 +28,10 @@ RSpec.configure do |config|
   config.render_views
 end
 
+def sign_up_user
+  user = User.create!(email: "user@domain.com",  password: "abcdef", is_admin: false)
+end
+
 def set_up_users_and_expenses
   let(:admin) { User.create!(email: "admin@domain.com",  password: "abcdef", is_admin: true) }
   let(:user) { User.create!(email: "user@domain.com",  password: "abcdef", is_admin: false) }
