@@ -4,7 +4,7 @@ class CreateExpenses < ActiveRecord::Migration
       t.integer :owner_id, null: false
       t.datetime :datetime, null: false
       t.integer :weeknum, null: false
-      t.string :amount, null: false
+      t.float :amount, null: false
       t.string :description, null: false
 
       t.timestamps null: false
