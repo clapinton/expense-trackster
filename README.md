@@ -16,6 +16,7 @@ A React component called `Root` gets rendered on the target HTML element `<div i
 * Clone the repo;
 * run `bundle exec install` to install all ruby gems;
 * run `npm install` to install the required npm packages;
+* start PostgreSQL;
 * on one terminal tab, run `rails s` to start the rails server;
 * on another terminal tab, run `npm start` to start webpack;
 * the app should be available on localhost:3000
