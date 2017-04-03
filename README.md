@@ -29,7 +29,9 @@ Authentication was written using the following framework:
 ### Backend
 
 `bundle exec rspec` will run all specs.
+
 `bundle exec rspec specs/user_spec.rb` will run the User model spec.
+
 `bundle exec rspec specs/user_spec.rb:47` will only run the spec on line 47 of the User model.
 
 Backend tests cover the following:
