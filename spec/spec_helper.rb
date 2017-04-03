@@ -35,34 +35,6 @@ end
 def set_up_users_and_expenses
   let(:admin) { User.create!(email: "admin@domain.com",  password: "abcdef", is_admin: true) }
   let(:user) { User.create!(email: "user@domain.com",  password: "abcdef", is_admin: false) }
-  let(:expense_admin) { Expense.create!(amount: "123.45", owner_id: admin.id, datetime: '1414-12-14T14:12:00.000Z', description: 'Created by an admin') }
-  let(:expense_user) { Expense.create!(amount: "678.90", owner_id: user.id, datetime: '1414-12-14T14:12:00.000Z', description: 'Created by a user') }
+  let(:expense_admin) { Expense.create!(amount: 123.45, owner_id: admin.id, datetime: '2017-04-03T14:04:00.000Z', description: 'Created by an admin', weeknum: 201714) }
+  let(:expense_user) { Expense.create!(amount: 678.90, owner_id: user.id, datetime: '2017-04-03T14:04:00.000Z', description: 'Created by a user', weeknum: 201714) }
 end
-
-# def sign_up(username)
-#   visit new_user_path
-#   fill_in "Username", with: username
-#   fill_in "Password", with: 'abcdef'
-#   click_button 'Sign Up'
-# end
-
-# def sign_up_as_ginger_baker
-#   sign_up("ginger_baker")
-# end
-
-# def sign_in(username)
-#   visit new_session_path
-#   fill_in "Username", with: username
-#   fill_in "Password", with: 'abcdef'
-#   click_button 'Sign In'
-# end
-
-# def make_link(title = nil, url = nil)
-#   title ||= "reddit"
-#   url ||= "http://www.reddit.com"
-
-#   visit new_link_path
-#   fill_in 'Title', with: title
-#   fill_in 'URL', with: url
-#   click_button "Create New Link"
-# end
