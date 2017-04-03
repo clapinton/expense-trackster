@@ -10,7 +10,7 @@ One static page is configured as html.erb, having the header and a single HTML e
 
 **Frontend**: JS ES6 and React
 
-A React component called `Root` gets rendered on the target `<div id="root">`. That component then renders other components (login or dashboard) according to the URL route.
+A React component called `Root` gets rendered on the target HTML element `<div id="root">`. That component then renders other components (login or dashboard) according to the URL route.
 
 ## Backend Structure
 
@@ -23,6 +23,23 @@ Authentication was written using the following framework:
 * on login, the input password is compared against the password_digest using the `BCrypt#is_password?(password)` method;
 * if login is successful, a session_token is generated and saved to the respective User and stored in the client's cookie: `session[:session_token] = user.session_token`;
 * the pure text password is, therefore, never stored anywhere and is discarded as soon as the login process finalizes with either success or error.
+
+### Users
+Each user stores its email, password_digest and an is_admin flag. It also stores a random session_token, which is also stored in the browser's cookie on login. When the user logs out, the session_token is regenerated on the server, so it doesn't match the cookie's value anymore.
+
+### Session
+Session is only a controller which manages Log In and Log Out actions.
+
+### Expenses
+Besides all basic required fields, Expenses also store a `weeknum` in the integer form of `YYYYWW` (year digits followed by the week number digits). This is useful when generating a report, since we can easily group by the `weeknum` field when adding the expenses amounts. Also, since we have years before weeks, we can also use it to order when generating the report (notice that `WWYYYY` would not work for ordering purposes).
+
+### Reports
+The Reports features seem like a small one, so the initial thought was just building a simple SQL query under the Expenses model.
+
+That option is not the best one since it's not scalable. If we want to expand the Reports and build more features into it (adding more filters, rendering more information etc), that would mean expanding the once simple reporting method inside Expenses. It wouldn't scale without going against the Single Responsibility Principle. Because of that, Reports was broken into its own model and controller.
+
+Having a Reports model also gives us the option of trackability (we can see who generated each report, when and what set of filters was used). This is more important for auditing purposes, which is a more advanced feature for project at this point.
+
 
 ## Testing
 
