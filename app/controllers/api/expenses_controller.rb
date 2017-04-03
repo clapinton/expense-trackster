@@ -8,7 +8,6 @@ class Api::ExpensesController < ApplicationController
   end
 
   def show
-    puts("Hit #show for #{params[:id]}")
     @expense = Expense.find(params[:id])
     
     if @expense && is_owner_or_admin(@expense)
