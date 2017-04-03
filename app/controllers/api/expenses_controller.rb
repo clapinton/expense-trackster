@@ -24,7 +24,6 @@ class Api::ExpensesController < ApplicationController
     expense = Expense.new(expense_params)
     expense.owner_id = current_user.id
     expense.weeknum = expense.get_weeknum
-
     if expense.save
       @expenses = Expense.get_all_expenses(current_user)
       render 'api/expenses/index'
@@ -38,6 +37,7 @@ class Api::ExpensesController < ApplicationController
     @expense = Expense.find(params[:id])
 
     if is_correct_owner(@expense)
+      @expense.weeknum = @expense.get_weeknum
 
       if @expense.update(expense_params)
         @expenses = Expense.get_all_expenses(current_user)
